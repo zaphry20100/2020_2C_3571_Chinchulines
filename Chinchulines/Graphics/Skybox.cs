@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TGC.MonoGame.TP.Graphics
+namespace Chinchulines.Graphics
 {
     /// <summary>
     /// Handles all of the aspects of working with a skybox.
