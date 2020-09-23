@@ -15,5 +15,6 @@ namespace Chinchulines.LogicModels
         public abstract void Load(ContentManager content);
         public abstract void Update();
         public abstract void Draw(Matrix view, Matrix projection);
+        public abstract void Unload();
     }
 }

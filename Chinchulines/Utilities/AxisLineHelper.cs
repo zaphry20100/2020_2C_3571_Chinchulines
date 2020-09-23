@@ -62,5 +62,10 @@ namespace Chinchulines.Utilities
                 _device.DrawUserPrimitives(PrimitiveType.LineList, AxisLinesVertices, 0, 3);
             }
         }
+
+        public override void Unload()
+        {
+            // Unload Content?
+        }
     }
 }

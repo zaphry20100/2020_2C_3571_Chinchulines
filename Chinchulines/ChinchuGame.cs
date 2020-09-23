@@ -101,6 +101,11 @@ namespace Chinchulines
         protected override void UnloadContent()
         {
             Content.Unload();
+            
+            foreach (var modelObject in _models)
+            {
+                modelObject.Unload();
+            }
 
             base.UnloadContent();
         }

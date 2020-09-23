@@ -76,5 +76,10 @@ namespace Chinchulines.Graphics
             _device.RasterizerState = originalRasterizerState;
 
         }
+
+        public override void Unload()
+        {
+            // Unload Content?
+        }
     }
 }

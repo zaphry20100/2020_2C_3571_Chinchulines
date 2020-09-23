@@ -72,6 +72,11 @@ namespace Chinchulines.LogicModels
             }
         }
 
+        public override void Unload()
+        {
+            // Unload Content?
+        }
+
         // Private methods
         // TODO Improve movements
         private void Move(KeyboardState state)
