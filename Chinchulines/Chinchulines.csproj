@@ -28,4 +28,15 @@
     <Folder Include="Content\Models\Spaceships" />
     <Folder Include="Content\Textures\Spaceships" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bin\DesktopGL\Content\Skyboxes\cube.xnb">
+      <Link>Content\Graphics\SpaceBox\cube.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\DesktopGL\Content\Skyboxes\Skybox.xnb">
+      <Link>Content\Graphics\SpaceBox\Skybox.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\DesktopGL\Content\Skyboxes\SunInSpace.xnb">
+      <Link>Content\Graphics\SpaceBox\SunInSpace.xnb</Link>
+    </Content>
+  </ItemGroup>
 </Project>
