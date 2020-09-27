@@ -1,4 +1,6 @@
-﻿namespace Chinchulines.LogicModels
+﻿using Microsoft.Xna.Framework;
+
+namespace Chinchulines.LogicModels
 {
     public class SpaceshipMk1 : Spaceship
     {
@@ -7,7 +9,7 @@
         private const string EffectPath = "Effects/Shader"; // For the moment
         private const string TexturePath = "Textures/Spaceships/MK1/MK1-Texture";
         
-        public SpaceshipMk1() : base(ModelPath, EffectPath, TexturePath)
+        public SpaceshipMk1(Vector3 position) : base(position, ModelPath, EffectPath, TexturePath)
         {
         }
     }

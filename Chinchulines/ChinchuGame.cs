@@ -4,6 +4,7 @@ using Chinchulines.LogicModels;
 using Chinchulines.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Chinchulines
 {
@@ -31,6 +32,8 @@ namespace Chinchulines
         private Matrix Projection { get; set; }
 
         private Camera _camera;
+        
+        public Vector3 GlobalPosition = new Vector3(0,5, -20); 
 
         private readonly List<ModelObject> _models = new List<ModelObject>();
         private AxisLineHelper _axisLines;
@@ -39,9 +42,10 @@ namespace Chinchulines
             Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 800f / 600f, 0.1f, 1000f);
   
             _models.Add(new SpaceBox(GraphicsDevice));
-            _models.Add(new SpaceshipMk1());
+            _models.Add(new SpaceshipMk1(GlobalPosition));
             
-            _camera = new Camera(new Vector3(0, 0, 20));
+            _camera = new Camera(GlobalPosition);
+            // _camera.Position = GlobalPosition;
             
             if (ShowAxisLines)
             {
@@ -72,6 +76,11 @@ namespace Chinchulines
 
         protected override void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                Exit();
+            }
+            
             foreach (var modelObject in _models)
             {
                 modelObject.Update();
@@ -87,12 +96,12 @@ namespace Chinchulines
             
             foreach (var modelObject in _models)
             {
-                modelObject.Draw(_camera.View, Projection);
+                modelObject.Draw(_camera.View, Projection, _camera.Position);
             }
             
             if (ShowAxisLines)
             {
-                _axisLines.Draw(_camera.View, Projection);
+                _axisLines.Draw(_camera.View, Projection, _camera.Position);
             }
             
             base.Draw(gameTime);

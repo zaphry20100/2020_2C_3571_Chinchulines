@@ -48,7 +48,7 @@ namespace Chinchulines.Utilities
             throw new System.NotImplementedException();
         }
 
-        public override void Draw(Matrix view, Matrix projection)
+        public override void Draw(Matrix view, Matrix projection, Vector3 cameraPosition)
         {
 
             BasicEffect.World = Matrix.Identity;

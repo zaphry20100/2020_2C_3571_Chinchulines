@@ -16,7 +16,7 @@ namespace Chinchulines.Graphics
         private TextureCube _spaceBoxTexture;
         private Effect _spaceBoxEffect;
         private readonly GraphicsDevice _device;
-
+        
         // Size of the cube
         private const float Size = 500f;
 
@@ -25,8 +25,15 @@ namespace Chinchulines.Graphics
             _device = device;
         }
         
-        private void Draw(Matrix view, Matrix projection, Vector3 cameraPosition)
+        public override void Draw(Matrix view, Matrix projection, Vector3 cameraPosition)
         {
+            _device.Clear(Color.CornflowerBlue);
+            
+            RasterizerState originalRasterizerState = _device.RasterizerState;
+            RasterizerState rasterizerState = new RasterizerState();
+            rasterizerState.CullMode = CullMode.None;
+            _device.RasterizerState = rasterizerState;
+            
             // Go through each pass in the effect, but we know there is only one...
             foreach (EffectPass pass in _spaceBoxEffect.CurrentTechnique.Passes)
             {
@@ -48,6 +55,9 @@ namespace Chinchulines.Graphics
                     mesh.Draw();
                 }
             }
+            
+            _device.RasterizerState = originalRasterizerState;
+            
         }
 
         public override void Load(ContentManager content)
@@ -61,21 +71,7 @@ namespace Chinchulines.Graphics
         {
             // Nothing to do
         }
-
-        public override void Draw(Matrix view, Matrix projection)
-        {
-            _device.Clear(Color.CornflowerBlue);
-
-            RasterizerState originalRasterizerState = _device.RasterizerState;
-            RasterizerState rasterizerState = new RasterizerState();
-            rasterizerState.CullMode = CullMode.None;
-            _device.RasterizerState = rasterizerState;
-
-            Draw(view, projection, Vector3.Zero);
-
-            _device.RasterizerState = originalRasterizerState;
-
-        }
+        
 
         public override void Unload()
         {

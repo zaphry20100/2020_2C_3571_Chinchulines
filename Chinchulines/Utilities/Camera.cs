@@ -6,14 +6,14 @@ namespace Chinchulines.Utilities
 {
     public class Camera
     {
-        private Vector3 _position;
+        public Vector3 Position;
         public Matrix View { get; set; }
         private readonly InputActions _actions;
         
         private float _angle = 0;
         public Camera(Vector3 position)
         {
-            _position = position;
+            Position = position;
             _actions = new InputActions
             {
                 Up = Keys.Up,
@@ -21,7 +21,7 @@ namespace Chinchulines.Utilities
                 Left = Keys.Left,
                 Right = Keys.Right
             };
-            View = Matrix.CreateLookAt(_position, Vector3.Zero, Vector3.Up);
+            View = Matrix.CreateLookAt(Position, Vector3.Zero, Vector3.Up);
         }
         
         public void Move()
@@ -33,7 +33,7 @@ namespace Chinchulines.Utilities
             {
                 // TODO
                 _angle += 0.01f;
-                _position = new Vector3(0, (float) Math.Sin(_angle), (float) Math.Cos(_angle));
+                Position = new Vector3(0, (float) Math.Sin(_angle), (float) Math.Cos(_angle));
                 
                 // x = r.sin(fi)*cos(tita)
                 // y = r.sin(fi)*sin(tita)
@@ -45,29 +45,29 @@ namespace Chinchulines.Utilities
             {
                 // TODO
                 _angle -= 0.01f;
-                _position = new Vector3(0, (float) Math.Sin(_angle), (float) Math.Cos(_angle));
+                Position = new Vector3(0, (float) Math.Sin(_angle), (float) Math.Cos(_angle));
                 
                 CreateLookAt();
             }
             if (state.IsKeyDown(_actions.Left))
             {
-                _angle -= 0.01f;
-                _position = new Vector3((float) Math.Sin(_angle), 0, (float) Math.Cos(_angle));
+                _angle += 0.01f;
+                Position = new Vector3((float) Math.Cos(_angle), 0, (float) Math.Sin(_angle));
                     
                 CreateLookAt();
             }
             if (state.IsKeyDown(_actions.Right))
             {
                 _angle += 0.01f;
-                _position = new Vector3((float) Math.Sin(_angle), 0, (float) Math.Cos(_angle));
+                Position = new Vector3((float) Math.Sin(_angle), 0, (float) Math.Cos(_angle));
                 
                 CreateLookAt();
             }
         }
 
-        private void CreateLookAt()
+        public void CreateLookAt()
         {
-            View = Matrix.CreateLookAt(20 * _position,Vector3.Zero, Vector3.Up);
+            View = Matrix.CreateLookAt(-20 * Position,Vector3.Zero, Vector3.Up);
         }
         
     }
