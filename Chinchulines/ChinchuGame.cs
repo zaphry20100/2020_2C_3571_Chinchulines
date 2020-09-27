@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Chinchulines.Graphics;
+﻿using Chinchulines.Graphics;
 using Chinchulines.LogicModels;
 using Chinchulines.Utilities;
 using Microsoft.Xna.Framework;
@@ -33,24 +32,31 @@ namespace Chinchulines
 
         private Camera _camera;
         
-        public Vector3 GlobalPosition = new Vector3(0,5, -20); 
+        public Vector3 GlobalPosition = Vector3.Zero; 
 
-        private readonly List<ModelObject> _models = new List<ModelObject>();
+        // private readonly List<ModelObject> _models = new List<ModelObject>();
         private AxisLineHelper _axisLines;
+        private SpaceBox box;
+        private SpaceshipMk1 mk1;
+        private Planet venus;
         protected override void Initialize()
         {
             Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 800f / 600f, 0.1f, 1000f);
   
-            _models.Add(new SpaceBox(GraphicsDevice));
-            _models.Add(new SpaceshipMk1(GlobalPosition));
+            // _models.Add(new SpaceBox(GraphicsDevice));
+            // _models.Add(new SpaceshipMk1(GlobalPosition));
+            _camera = new Camera(GlobalPosition, Vector3.Zero);
             
-            _camera = new Camera(GlobalPosition);
+            box = new SpaceBox(GraphicsDevice, _camera);
+            mk1 = new SpaceshipMk1(GlobalPosition, _camera);
+            venus = new Planet(_camera);
+            
             // _camera.Position = GlobalPosition;
             
-            if (ShowAxisLines)
-            {
-                _axisLines = new AxisLineHelper(GraphicsDevice);
-            }
+            // if (ShowAxisLines)
+            // {
+            //     _axisLines = new AxisLineHelper(GraphicsDevice);
+            // }
             
             Graphics.PreferredBackBufferWidth = 1024;
             Graphics.PreferredBackBufferHeight = 768;
@@ -62,15 +68,19 @@ namespace Chinchulines
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             
-            foreach (var modelObject in _models)
-            {
-                modelObject.Load(Content);
-            }
+            // foreach (var modelObject in _models)
+            // {
+            //     modelObject.Load(Content);
+            // }
+            
+            box.Load(Content);
+            mk1.Load(Content);
+            venus.Load(Content);
 
-            if (ShowAxisLines)
-            {
-                _axisLines.Load(Content);
-            }
+            // if (ShowAxisLines)
+            // {
+            //     _axisLines.Load(Content);
+            // }
             base.LoadContent();
         }
 
@@ -81,12 +91,17 @@ namespace Chinchulines
                 Exit();
             }
             
-            foreach (var modelObject in _models)
-            {
-                modelObject.Update();
-            }
+            // foreach (var modelObject in _models)
+            // {
+            //     modelObject.Update();
+            // }
             
-            _camera.Move();
+            box.Update();
+            mk1.Update();
+            _camera.UpdateLookAt(mk1.GlobalPosition, mk1.GlobalPosition);
+            venus.Update();
+            
+            // _camera.Move();
 
             base.Update(gameTime);
         }
@@ -94,15 +109,19 @@ namespace Chinchulines
         protected override void Draw(GameTime gameTime)
         {
             
-            foreach (var modelObject in _models)
-            {
-                modelObject.Draw(_camera.View, Projection, _camera.Position);
-            }
+            // foreach (var modelObject in _models)
+            // {
+            //     modelObject.Draw(Matrix.Identity, Projection, Vector3.Backward);
+            // }
             
-            if (ShowAxisLines)
-            {
-                _axisLines.Draw(_camera.View, Projection, _camera.Position);
-            }
+            box.Draw(Projection);
+            mk1.Draw(Projection);
+            venus.Draw(Projection);
+            
+            // if (ShowAxisLines)
+            // {
+            //     _axisLines.Draw(Matrix.Identity, Projection, Vector3.Backward);
+            // }
             
             base.Draw(gameTime);
         }
@@ -111,10 +130,10 @@ namespace Chinchulines
         {
             Content.Unload();
             
-            foreach (var modelObject in _models)
-            {
-                modelObject.Unload();
-            }
+            // foreach (var modelObject in _models)
+            // {
+            //     modelObject.Unload();
+            // }
 
             base.UnloadContent();
         }

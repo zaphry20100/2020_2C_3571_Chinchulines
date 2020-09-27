@@ -1,4 +1,5 @@
 ﻿using Chinchulines.LogicModels;
+using Chinchulines.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,12 +21,12 @@ namespace Chinchulines.Graphics
         // Size of the cube
         private const float Size = 500f;
 
-        public SpaceBox(GraphicsDevice device)
+        public SpaceBox(GraphicsDevice device, Camera camera) : base(camera)
         {
             _device = device;
         }
         
-        public override void Draw(Matrix view, Matrix projection, Vector3 cameraPosition)
+        public override void Draw(Matrix projection)
         {
             _device.Clear(Color.CornflowerBlue);
             
@@ -47,9 +48,9 @@ namespace Chinchulines.Graphics
                         part.Effect = _spaceBoxEffect;
                         part.Effect.Parameters["SkyBoxTexture"].SetValue(_spaceBoxTexture);
                         part.Effect.Parameters["World"].SetValue(Matrix.CreateScale(Size));
-                        part.Effect.Parameters["View"].SetValue(view);
+                        part.Effect.Parameters["View"].SetValue(_camera.View);
                         part.Effect.Parameters["Projection"].SetValue(projection);
-                        part.Effect.Parameters["CameraPosition"].SetValue(cameraPosition);
+                        part.Effect.Parameters["CameraPosition"].SetValue(_camera.Position);
                     }
 
                     mesh.Draw();

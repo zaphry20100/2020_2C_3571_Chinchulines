@@ -30,13 +30,16 @@ namespace Chinchulines.LogicModels
         private Vector3 _position = Vector3.Zero;
         private const float MovementSpeed = .5f;
         private InputActions InputActions { get; }
-        protected Spaceship(Vector3 position, string modelPath, string effectPath, string texturePath)
+        
+        // private Camera _camera;
+        protected Spaceship(Vector3 position, string modelPath, string effectPath, string texturePath, Camera camera) : base(camera)
         {
             _modelPath = modelPath;
             _effectPath = effectPath;
             _texturePath = texturePath;
 
-            GlobalPosition = position;
+            // _camera = new Camera(Vector3.Zero, Vector3.Zero);
+            _position = position;
             
             // Set the controls for Spaceships
             InputActions = new InputActions
@@ -72,7 +75,7 @@ namespace Chinchulines.LogicModels
             Move(Keyboard.GetState());
         }
         
-        public override void Draw(Matrix view, Matrix projection, Vector3 cameraPosition)
+        public override void Draw(Matrix projection)
         {
             
             foreach (ModelMesh mesh in Model.Meshes)
@@ -81,15 +84,20 @@ namespace Chinchulines.LogicModels
                 {
                     part.Effect = Effect;
                     part.Effect.Parameters["World"].SetValue(World * mesh.ParentBone.Transform * 
-                                                             Matrix.CreateTranslation(GlobalPosition) * 
+                                                             Matrix.CreateTranslation(_position) * 
                                                              Matrix.CreateFromYawPitchRoll(_rotation.X, _rotation.Y, _rotation.Z));
-                    part.Effect.Parameters["View"].SetValue(view);
+                    part.Effect.Parameters["View"].SetValue(_camera.View);
                     part.Effect.Parameters["Projection"].SetValue(projection);
                     part.Effect.Parameters["ModelTexture"].SetValue(Texture2D);
                 }
                 mesh.Draw();
             }
         }
+
+        // public Vector3 CameraPosition()
+        // {
+        //     // return _camera.Position;
+        // }
 
         public override void Unload()
         {
@@ -153,7 +161,9 @@ namespace Chinchulines.LogicModels
                 //     _position.Z += .15f;
                 // }
                 
-                _position.Z += .15f;
+                _position.Z += 1f;
+                // _camera.TargetPosition = _position;
+                // _camera.UpdateLookAt();
             }
             if (!isAccelerating)
             {

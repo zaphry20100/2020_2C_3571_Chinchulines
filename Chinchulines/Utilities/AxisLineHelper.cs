@@ -13,7 +13,7 @@ namespace Chinchulines.Utilities
         private BasicEffect BasicEffect { get; }
 
         private readonly GraphicsDevice _device;
-        public AxisLineHelper(GraphicsDevice device)
+        public AxisLineHelper(GraphicsDevice device, Camera camera) : base(camera)
         {
             _device = device;
             AxisLinesVertices = new VertexPositionColor[6];
@@ -48,11 +48,11 @@ namespace Chinchulines.Utilities
             throw new System.NotImplementedException();
         }
 
-        public override void Draw(Matrix view, Matrix projection, Vector3 cameraPosition)
+        public override void Draw(Matrix projection)
         {
 
             BasicEffect.World = Matrix.Identity;
-            BasicEffect.View = view;
+            BasicEffect.View = _camera.View;
             BasicEffect.Projection = projection;
             BasicEffect.VertexColorEnabled = true;
 
