@@ -11,9 +11,9 @@ namespace Chinchulines.Utilities
         private readonly InputActions _actions;
         
         private float _angle = 0;
-        public Camera(Vector3 position)
+        public Camera()
         {
-            Position = position;
+            Position = new Vector3(0,0, -20);
             _actions = new InputActions
             {
                 Up = Keys.Up,

@@ -30,14 +30,12 @@ namespace Chinchulines.LogicModels
         private Vector3 _position = Vector3.Zero;
         private const float MovementSpeed = .5f;
         private InputActions InputActions { get; }
-        protected Spaceship(Vector3 position, string modelPath, string effectPath, string texturePath)
+        protected Spaceship(string modelPath, string effectPath, string texturePath)
         {
             _modelPath = modelPath;
             _effectPath = effectPath;
             _texturePath = texturePath;
 
-            GlobalPosition = position;
-            
             // Set the controls for Spaceships
             InputActions = new InputActions
             {
@@ -81,7 +79,7 @@ namespace Chinchulines.LogicModels
                 {
                     part.Effect = Effect;
                     part.Effect.Parameters["World"].SetValue(World * mesh.ParentBone.Transform * 
-                                                             Matrix.CreateTranslation(GlobalPosition) * 
+                                                             Matrix.CreateTranslation(_position) * 
                                                              Matrix.CreateFromYawPitchRoll(_rotation.X, _rotation.Y, _rotation.Z));
                     part.Effect.Parameters["View"].SetValue(view);
                     part.Effect.Parameters["Projection"].SetValue(projection);
@@ -148,26 +146,22 @@ namespace Chinchulines.LogicModels
             if (state.IsKeyDown(InputActions.Accelerate))
             {
                 isAccelerating = true;
-                // if (_position.Z < 3f)
-                // {
-                //     _position.Z += .15f;
-                // }
-                
-                _position.Z += .15f;
+                if (_position.Z < 3f)
+                {
+                    _position.Z += .15f;
+                }
             }
             if (!isAccelerating)
             {
-                // if (_position.Z > 0)
-                // {
-                //     _position.Z -= .15f;
-                // }
+                if (_position.Z > 0)
+                {
+                    _position.Z -= .15f;
+                }
             }
             if (!isMoving)
             {
                 // _rotation = new Vector3(0, 0, 0);
             }
-
-            GlobalPosition = _position;
         }
     }
 }

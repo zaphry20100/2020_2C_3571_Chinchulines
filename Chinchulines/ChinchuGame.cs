@@ -8,11 +8,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Chinchulines
 {
-    /// <summary>
-    ///     Esta es la clase principal  del juego.
-    ///     Inicialmente puede ser renombrado o copiado para hacer más ejemplos chicos, en el caso de copiar para que se
-    ///     ejecute el nuevo ejemplo deben cambiar la clase que ejecuta Program <see cref="Program.Main()" /> linea 10.
-    /// </summary>
     public class ChinchuGame : Game
     {
         private const bool ShowAxisLines = true;
@@ -33,8 +28,6 @@ namespace Chinchulines
 
         private Camera _camera;
         
-        public Vector3 GlobalPosition = new Vector3(0,5, -20); 
-
         private readonly List<ModelObject> _models = new List<ModelObject>();
         private AxisLineHelper _axisLines;
         protected override void Initialize()
@@ -42,10 +35,9 @@ namespace Chinchulines
             Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 800f / 600f, 0.1f, 1000f);
   
             _models.Add(new SpaceBox(GraphicsDevice));
-            _models.Add(new SpaceshipMk1(GlobalPosition));
+            _models.Add(new SpaceshipMk1());
             
-            _camera = new Camera(GlobalPosition);
-            // _camera.Position = GlobalPosition;
+            _camera = new Camera();
             
             if (ShowAxisLines)
             {
