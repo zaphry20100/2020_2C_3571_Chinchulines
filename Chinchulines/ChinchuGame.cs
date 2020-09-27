@@ -35,6 +35,7 @@ namespace Chinchulines
             Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 800f / 600f, 0.1f, 1000f);
   
             _models.Add(new SpaceBox(GraphicsDevice));
+            _models.Add(new Planet());
             _models.Add(new SpaceshipMk1());
             
             _camera = new Camera();

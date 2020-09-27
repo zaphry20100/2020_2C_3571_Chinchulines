@@ -13,7 +13,7 @@ namespace Chinchulines.Utilities
         private float _angle = 0;
         public Camera()
         {
-            Position = new Vector3(0,0, -20);
+            Position = new Vector3(0,3, -20);
             _actions = new InputActions
             {
                 Up = Keys.Up,
