@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using Chinchulines.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Chinchulines.Graphics;
+using System;
+using System.Linq;
 
 namespace Chinchulines
 {
@@ -56,14 +56,16 @@ namespace Chinchulines
 
         private Boolean TestRealControls { get; set; } = true;
 
-        private Vector3 Rotation = new Vector3(0,0,0);
-        
+        private Vector3 Rotation = new Vector3(0, 0, 0);
+
         private float movementSpeed;
         private float speedUp;
 
         private Vector3 position;
 
         Skybox skybox;
+
+        private StageWorld _stageWorld;
 
         /// <summary>
         ///     Se llama una sola vez, al principio cuando se ejecuta el ejemplo.
@@ -81,14 +83,18 @@ namespace Chinchulines
             //Projection =
             //    Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, 1, 500);
 
-            position = new Vector3(0,0,0);
-            
+            position = new Vector3(0, -4, 0);
+
             movementSpeed = .5f;
             speedUp = 1;
 
             Graphics.PreferredBackBufferWidth = 1024;
             Graphics.PreferredBackBufferHeight = 768;
             Graphics.ApplyChanges();
+
+            _stageWorld = new StageWorld(this);
+            _stageWorld.Initialize();
+
             base.Initialize();
         }
 
@@ -103,7 +109,7 @@ namespace Chinchulines
 
             SpaceShipModelMK1 = Content.Load<Model>(ModelMK1); // Se puede cambiar por MK2 y MK3
             VenusModel = Content.Load<Model>(ContentFolderModels + "Venus/Venus");
-            
+
             var spaceShipEffect = (BasicEffect)SpaceShipModelMK1.Meshes[0].Effects[0];
             spaceShipEffect.TextureEnabled = true;
             spaceShipEffect.Texture = Content.Load<Texture2D>(TextureMK1); // Se puede cambiar por MK2 y MK3
@@ -120,7 +126,7 @@ namespace Chinchulines
             spaceShipEffect3.TextureEnabled = true;
             spaceShipEffect3.Texture = Content.Load<Texture2D>(TextureMK3); // Se puede cambiar por MK2 y MK3
 
-            var venusEffect = (BasicEffect) VenusModel.Meshes[0].Effects[0];
+            var venusEffect = (BasicEffect)VenusModel.Meshes[0].Effects[0];
             venusEffect.TextureEnabled = true;
             venusEffect.Texture = Content.Load<Texture2D>(ContentFolderTextures + "Venus/Venus-Texture");
 
@@ -148,7 +154,7 @@ namespace Chinchulines
             RotationY += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             VenusRotation += .005f;
 
-
+            _stageWorld.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -174,7 +180,7 @@ namespace Chinchulines
                 Rotation = new Vector3(0, 0, 0);
             }
 
-            if (TestRealControls)
+            if (false/*TestRealControls*/)
             {
                 var isMoving = false;
                 if (state.IsKeyDown(Keys.W))
@@ -246,7 +252,7 @@ namespace Chinchulines
                 }
 
             }
-            else
+            else if(false)
             {
                 if (state.IsKeyDown(Keys.W))
                 {
@@ -317,29 +323,31 @@ namespace Chinchulines
 
 
 
-            VenusModel.Draw(World * 
-                            Matrix.CreateScale(.05f) * 
-                            Matrix.CreateRotationY(VenusRotation) * 
-                            Matrix.CreateTranslation(-5f,-2f,-10), View, Projection);
-            
+            //VenusModel.Draw(World *
+            //                Matrix.CreateScale(.05f) *
+            //                Matrix.CreateRotationY(VenusRotation) *
+            //                Matrix.CreateTranslation(-5f, -2f, -10), View, Projection);
+
             // SpaceShipModel.Draw(World * Matrix.CreateScale(.8f) * Matrix.CreateRotationY(RotationY), View, Projection);
-            
+
             SpaceShipModelMK1.Draw(World * //Matrix.CreateTranslation(0,-15f,0) * 
-                                Matrix.CreateScale(.15f) *
-                                Matrix.CreateFromYawPitchRoll(Rotation.X, Rotation.Y, Rotation.Z) *
-                                // Rotation *
-                                Matrix.CreateTranslation(position) 
+                                Matrix.CreateScale(.10f) *
+                                Matrix.CreateFromYawPitchRoll(Rotation.X, Rotation.Y + 0.5f, Rotation.Z) *
+                                //Rotation *
+                                Matrix.CreateTranslation(position)
                 , View, Projection);
 
-            SpaceShipModelMK2.Draw(World *
-                            Matrix.CreateScale(.08f) *
-                            Matrix.CreateRotationY(VenusRotation) *
-                            Matrix.CreateTranslation(4f, -2f, -10), View, Projection);
+            //SpaceShipModelMK2.Draw(World *
+            //                Matrix.CreateScale(.08f) *
+            //                Matrix.CreateRotationY(VenusRotation) *
+            //                Matrix.CreateTranslation(4f, -2f, -10), View, Projection);
 
-            SpaceShipModelMK3.Draw(World *
-                            Matrix.CreateScale(.08f) *
-                            Matrix.CreateRotationY(-VenusRotation) *
-                            Matrix.CreateTranslation(3f, 2f, -10), View, Projection);
+            //SpaceShipModelMK3.Draw(World *
+            //                Matrix.CreateScale(.08f) *
+            //                Matrix.CreateRotationY(-VenusRotation) *
+            //                Matrix.CreateTranslation(3f, 2f, -10), View, Projection);
+
+            _stageWorld.Draw(gameTime);
 
             base.Draw(gameTime);
         }
