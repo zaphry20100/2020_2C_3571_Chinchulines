@@ -65,7 +65,7 @@ namespace Chinchulines
 
         Skybox skybox;
 
-        private StageWorld _stageWorld;
+        private DeathStarTrench _deathStarTrench;
 
         /// <summary>
         ///     Se llama una sola vez, al principio cuando se ejecuta el ejemplo.
@@ -92,8 +92,8 @@ namespace Chinchulines
             Graphics.PreferredBackBufferHeight = 768;
             Graphics.ApplyChanges();
 
-            _stageWorld = new StageWorld(this);
-            _stageWorld.Initialize();
+            _deathStarTrench = new DeathStarTrench(this);
+            _deathStarTrench.Initialize();
 
             base.Initialize();
         }
@@ -154,7 +154,7 @@ namespace Chinchulines
             RotationY += Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             VenusRotation += .005f;
 
-            _stageWorld.Update(gameTime);
+            _deathStarTrench.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -347,7 +347,7 @@ namespace Chinchulines
             //                Matrix.CreateRotationY(-VenusRotation) *
             //                Matrix.CreateTranslation(3f, 2f, -10), View, Projection);
 
-            _stageWorld.Draw(gameTime);
+            _deathStarTrench.Draw(gameTime);
 
             base.Draw(gameTime);
         }

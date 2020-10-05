@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Chinchulines.Graphics
 {
-    public class StageWorld : DrawableGameComponent
+    public class DeathStarTrench : DrawableGameComponent
     {
         private readonly ChinchuGame _game;
         private BasicEffect BasicEffect;
@@ -14,7 +14,7 @@ namespace Chinchulines.Graphics
 
         private RenderTarget2D MainSceneRenderTarget;
 
-        public StageWorld(ChinchuGame game) : base(game)
+        public DeathStarTrench(ChinchuGame game) : base(game)
         {
             _game = game;
         }
@@ -33,7 +33,7 @@ namespace Chinchulines.Graphics
         protected override void LoadContent()
         {
             // We load the city meshes into a model
-            Model = Game.Content.Load<Model>("Scene/city");
+            Model = Game.Content.Load<Model>("Scene/city/city");
             BasicEffect = (BasicEffect)Model.Meshes[0].Effects[0];
 
             // Create a full screen quad to post-process
