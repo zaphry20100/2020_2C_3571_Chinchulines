@@ -12,8 +12,6 @@ namespace Chinchulines.Graphics
 
         private FullScreenQuad FullScreenQuad;
 
-        private RenderTarget2D MainSceneRenderTarget;
-
         public DeathStarTrench(ChinchuGame game) : base(game)
         {
             _game = game;
@@ -38,14 +36,6 @@ namespace Chinchulines.Graphics
 
             // Create a full screen quad to post-process
             FullScreenQuad = new FullScreenQuad(GraphicsDevice);
-
-            // Create render targets. 
-            // MainRenderTarget is used to store the scene color
-            // BloomRenderTarget is used to store the bloom color and switches with MultipassBloomRenderTarget
-            // depending on the pass count, to blur the bloom color
-            MainSceneRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width,
-                GraphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8, 0,
-                RenderTargetUsage.DiscardContents);
 
             base.LoadContent();
         }
@@ -80,7 +70,6 @@ namespace Chinchulines.Graphics
         {
             base.UnloadContent();
             FullScreenQuad.Dispose();
-            MainSceneRenderTarget.Dispose();
         }
     }
 }

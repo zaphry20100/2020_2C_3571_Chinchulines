@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Chinchulines
@@ -66,6 +67,8 @@ namespace Chinchulines
         Skybox skybox;
 
         private DeathStarTrench _deathStarTrench;
+        private BoundingBox[] _deadthStarTrenchBoxes;
+        private List<BoundingSphere> _enemiesBoxes;
 
         /// <summary>
         ///     Se llama una sola vez, al principio cuando se ejecuta el ejemplo.
@@ -132,6 +135,14 @@ namespace Chinchulines
 
             skybox = new Skybox("Skyboxes/SunInSpace", Content);
 
+
+            _enemiesBoxes = new List<BoundingSphere>();
+            BoundingSphere newTarget = new BoundingSphere(new Vector3(1, 1, 1), 3);
+            _enemiesBoxes.Add(newTarget);
+
+            SetUpBoundingBoxes();
+
+
             base.LoadContent();
         }
 
@@ -155,6 +166,12 @@ namespace Chinchulines
             VenusRotation += .005f;
 
             _deathStarTrench.Update(gameTime);
+
+            BoundingSphere shipSpere = new BoundingSphere(position, 0.04f);
+            if (CheckCollision(shipSpere))
+            {
+                position = new Vector3(0, 0, 0);
+            }
 
             base.Update(gameTime);
         }
@@ -252,7 +269,7 @@ namespace Chinchulines
                 }
 
             }
-            else if(false)
+            else if (false)
             {
                 if (state.IsKeyDown(Keys.W))
                 {
@@ -349,6 +366,8 @@ namespace Chinchulines
 
             _deathStarTrench.Draw(gameTime);
 
+            DrawEnemies();
+
             base.Draw(gameTime);
         }
 
@@ -361,6 +380,46 @@ namespace Chinchulines
             Content.Unload();
 
             base.UnloadContent();
+        }
+
+        private void SetUpBoundingBoxes()
+        {
+            // TODO: buscar la forma de crear los boxes igual que la superficie
+            List<BoundingBox> boxes = new List<BoundingBox>();
+
+            Vector3[] newBox = new Vector3[2];
+            newBox[0] = position + new Vector3(2, 0, 0);
+            newBox[1] = position + new Vector3(3, 0, 0);
+            BoundingBox buildingBox = BoundingBox.CreateFromPoints(newBox);
+            boxes.Add(buildingBox);
+
+            _deadthStarTrenchBoxes = boxes.ToArray();
+        }
+
+        private bool CheckCollision(BoundingSphere sphere)
+        {
+            for (int i = 0; i < _deadthStarTrenchBoxes.Length; i++)
+            {
+                if (_deadthStarTrenchBoxes[i].Contains(sphere) != ContainmentType.Disjoint)
+                {
+                    return true;
+                }
+            }
+
+            for (int i = 0; i < _enemiesBoxes.Count; i++)
+            {
+                if (_enemiesBoxes[i].Contains(sphere) != ContainmentType.Disjoint)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void DrawEnemies()
+        {
+            Matrix worldMatrix = Matrix.CreateScale(_enemiesBoxes[0].Radius) * Matrix.CreateTranslation(_enemiesBoxes[0].Center);
         }
     }
 }
